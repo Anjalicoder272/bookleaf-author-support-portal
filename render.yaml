@@ -5,6 +5,7 @@ services:
     runtime: python
     rootDir: backend
     plan: free
+    region: singapore
     buildCommand: ./build.sh
     startCommand: uv run gunicorn config.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 90
     healthCheckPath: /api/health/
