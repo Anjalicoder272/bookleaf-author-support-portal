@@ -62,6 +62,10 @@ frontend/src/
 - **Data isolation by query, not by check.** Author endpoints filter every queryset by
   `request.user.author`, so another author's ticket is a 404 (ids can't even be probed), and the
   `book_id` on a new ticket is validated against the author's own books.
+- **No self-signup, by design.** An author account only makes sense with books, ISBNs and royalty
+  records attached, which come from BookLeaf's systems when an author signs a publishing contract.
+  Accounts are therefore provisioned by BookLeaf (here: the `seed_data` command), and nobody can
+  register themselves into the admin role. A self-signup flow would be a small addition if needed.
 - **Internal notes are a separate model** that the author serializers never touch, rather than a
   flag on messages that could be forgotten in one place.
 - **AI suggestions are stored next to the final values** (`ai_category` vs `category`,
