@@ -79,7 +79,7 @@ export default function LoginPage() {
 
       {/* Form */}
       <section className="relative flex items-center justify-center p-6 sm:p-12">
-        <ThemeToggle className="absolute right-4 top-4 border border-slate-200 bg-white p-2 text-slate-600 shadow-sm hover:bg-slate-50" />
+        <ThemeToggle className="absolute right-4 top-4 p-2 text-slate-600 hover:text-slate-900" />
         <div className="w-full max-w-sm animate-slide-up">
           <div className="mb-8 lg:hidden">
             <span className="text-lg font-semibold text-brand-800">BookLeaf Publishing</span>

@@ -54,7 +54,17 @@ body {
   background: var(--page-bg);
   color: var(--color-slate-900);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
-  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Set for a moment while the theme changes, so nothing animates and flickers. */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /*

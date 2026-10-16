@@ -29,7 +29,13 @@ export function useTheme(): Theme {
 }
 
 export function setTheme(theme: Theme) {
-  document.documentElement.classList.toggle("dark", theme === "dark");
+  const root = document.documentElement;
+  // Elements with `transition` would each fade to the new colours at their own pace, which flickers.
+  // Switch everything in one frame, then turn transitions back on.
+  root.classList.add("theme-switching");
+  root.classList.toggle("dark", theme === "dark");
+  void root.offsetHeight; // force the new colours to apply before transitions return
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
   try {
     localStorage.setItem(STORAGE_KEY, theme);
   } catch {
@@ -46,7 +52,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={() => setTheme(next)}
       title={`Switch to ${next} mode`}
       aria-label={`Switch to ${next} mode`}
-      className={`rounded-lg p-1.5 transition hover:rotate-12 ${className}`}
+      className={`p-1.5 transition-transform hover:rotate-12 ${className}`}
     >
       {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
