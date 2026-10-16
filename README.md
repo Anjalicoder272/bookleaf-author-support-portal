@@ -4,7 +4,10 @@ An author portal and an internal support desk for BookLeaf Publishing. Authors s
 royalties and raise support tickets; the operations team works a prioritised queue where AI classifies
 each ticket, scores its urgency and drafts a reply grounded in BookLeaf's own policies.
 
-- **Live demo:** _frontend URL_ · **API docs:** _backend URL_/api/docs/
+- **Live demo:** https://bookleaf-author-support-beta.vercel.app
+- **API docs (Swagger):** https://bookleaf-author-support-api.onrender.com/api/docs/
+- The API runs on Render's free tier, which sleeps after 15 minutes idle. The first request after a pause can
+  take up to a minute while it wakes; after that it is fast.
 - **Write-up:** [WRITEUP.md](WRITEUP.md)
 
 ## Test logins

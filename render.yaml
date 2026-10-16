@@ -1,7 +1,7 @@
 # Render Blueprint for the Django API. The Next.js frontend deploys separately on Vercel.
 services:
   - type: web
-    name: bookleaf-api
+    name: bookleaf-author-support-api
     runtime: python
     rootDir: backend
     plan: free
@@ -23,8 +23,8 @@ services:
         sync: false
       - key: GEMINI_MODEL
         value: gemini-3.1-flash-lite
-      - key: CORS_ALLOWED_ORIGINS # the Vercel URL, e.g. https://bookleaf-portal.vercel.app
-        sync: false
+      - key: CORS_ALLOWED_ORIGINS # the Vercel frontend
+        value: https://bookleaf-author-support-beta.vercel.app
       - key: DEMO_AUTHOR_PASSWORD
         value: author123
       - key: DEMO_ADMIN_PASSWORD
