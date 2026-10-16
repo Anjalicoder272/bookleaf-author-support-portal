@@ -12,7 +12,7 @@ export const btn = {
 };
 
 export const input =
-  "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm shadow-sm transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100 focus:outline-none";
+  "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm shadow-sm transition placeholder:text-slate-400 focus:outline-none";
 
 export function Spinner({ className = "h-4 w-4" }: { className?: string }) {
   return <Loader2 className={`${className} animate-spin`} aria-hidden />;
@@ -72,7 +72,7 @@ export function StatCard({
       onClick={onClick}
       className={`${card} group flex w-full items-center gap-3 p-3 text-left transition sm:gap-4 sm:p-4 ${
         onClick ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-md" : ""
-      } ${active ? "ring-2 ring-brand-500" : ""}`}
+      } ${active ? "!border-brand-200 !bg-brand-50" : ""}`}
     >
       <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl sm:h-11 sm:w-11 ${tones[tone]} transition group-hover:scale-110`}>
         <Icon className="h-5 w-5" />

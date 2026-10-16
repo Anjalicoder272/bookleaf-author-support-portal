@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the .dark class on <html> (set by the theme toggle), not only the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
 
+/* Not `inline`, so utilities read these through CSS variables and dark mode can remap them. */
+@theme {
   /* Brand: deep teal with a warm amber accent */
   --color-brand-50: #effaf8;
   --color-brand-100: #d7f2ec;
@@ -36,10 +42,113 @@
   to { background-position: 200% 0; }
 }
 
+:root {
+  --page-bg: #f6f8f8;
+  --surface: #ffffff;
+  --skeleton-a: #eef2f2;
+  --skeleton-b: #e2e8e8;
+  color-scheme: light;
+}
+
 body {
-  background: #f6f8f8;
-  color: #0f172a;
+  background: var(--page-bg);
+  color: var(--color-slate-900);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/*
+ * Dark mode: instead of adding dark: variants to every component, remap the palette.
+ * Neutrals (slate) are inverted, pale tints (50-200) become translucent washes and
+ * dark text shades (700-900) become light ones. Mid shades (300-600) used for solid
+ * buttons, dots and gradients stay as they are.
+ */
+.dark {
+  color-scheme: dark;
+  --page-bg: #0b1214;
+  --surface: #121c1f;
+  --skeleton-a: #172326;
+  --skeleton-b: #203033;
+
+  --color-slate-50: #162125;
+  --color-slate-100: #1c2a2e;
+  --color-slate-200: #263639;
+  --color-slate-300: #36494d;
+  --color-slate-400: #66797e;
+  --color-slate-500: #8a9ca0;
+  --color-slate-600: #a8b7ba;
+  --color-slate-700: #c5d1d3;
+  --color-slate-800: #dce5e7;
+  --color-slate-900: #eef3f4;
+
+  --color-brand-50: color-mix(in oklab, #14a38b 14%, transparent);
+  --color-brand-100: color-mix(in oklab, #14a38b 22%, transparent);
+  --color-brand-200: color-mix(in oklab, #14a38b 35%, transparent);
+  --color-brand-700: #5fd3bd;
+  --color-brand-800: #7fe0cd;
+}
+.dark {
+  --color-red-50: color-mix(in oklab, var(--color-red-500) 13%, transparent);
+  --color-red-100: color-mix(in oklab, var(--color-red-500) 20%, transparent);
+  --color-red-200: color-mix(in oklab, var(--color-red-500) 32%, transparent);
+  --color-red-700: var(--color-red-300);
+  --color-red-800: var(--color-red-300);
+}
+.dark {
+  --color-amber-50: color-mix(in oklab, var(--color-amber-500) 13%, transparent);
+  --color-amber-100: color-mix(in oklab, var(--color-amber-500) 20%, transparent);
+  --color-amber-200: color-mix(in oklab, var(--color-amber-500) 32%, transparent);
+  --color-amber-700: var(--color-amber-300);
+  --color-amber-800: var(--color-amber-300);
+}
+.dark {
+  --color-emerald-50: color-mix(in oklab, var(--color-emerald-500) 13%, transparent);
+  --color-emerald-100: color-mix(in oklab, var(--color-emerald-500) 20%, transparent);
+  --color-emerald-200: color-mix(in oklab, var(--color-emerald-500) 32%, transparent);
+  --color-emerald-700: var(--color-emerald-300);
+  --color-emerald-800: var(--color-emerald-300);
+}
+.dark {
+  --color-blue-50: color-mix(in oklab, var(--color-blue-500) 13%, transparent);
+  --color-blue-100: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+  --color-blue-200: color-mix(in oklab, var(--color-blue-500) 32%, transparent);
+  --color-blue-700: var(--color-blue-300);
+  --color-blue-800: var(--color-blue-300);
+}
+.dark {
+  --color-violet-50: color-mix(in oklab, var(--color-violet-500) 13%, transparent);
+  --color-violet-100: color-mix(in oklab, var(--color-violet-500) 20%, transparent);
+  --color-violet-200: color-mix(in oklab, var(--color-violet-500) 32%, transparent);
+  --color-violet-700: var(--color-violet-300);
+  --color-violet-800: var(--color-violet-300);
+}
+.dark {
+  --color-yellow-50: color-mix(in oklab, var(--color-yellow-500) 13%, transparent);
+  --color-yellow-100: color-mix(in oklab, var(--color-yellow-500) 20%, transparent);
+  --color-yellow-200: color-mix(in oklab, var(--color-yellow-500) 32%, transparent);
+  --color-yellow-700: var(--color-yellow-300);
+  --color-yellow-800: var(--color-yellow-300);
+}
+.dark {
+  --color-orange-50: color-mix(in oklab, var(--color-orange-500) 13%, transparent);
+  --color-orange-100: color-mix(in oklab, var(--color-orange-500) 20%, transparent);
+  --color-orange-200: color-mix(in oklab, var(--color-orange-500) 32%, transparent);
+  --color-orange-700: var(--color-orange-300);
+  --color-orange-800: var(--color-orange-300);
+}
+
+/* White surfaces become the dark card colour, but white text must stay white. */
+.dark { --color-white: var(--surface); }
+.dark .text-white { color: #fff; }
+
+/* The sidebar and login brand panel are always dark teal, so they keep the original brand shades. */
+.dark .brand-panel {
+  --color-white: #fff;
+  --color-brand-50: #effaf8;
+  --color-brand-100: #d7f2ec;
+  --color-brand-200: #b0e4d9;
+  --color-brand-700: #0e6b5c;
+  --color-brand-800: #10564b;
 }
 
 /* Staggered entrance for lists and grids */
@@ -53,14 +162,22 @@ body {
 .stagger > *:nth-child(n + 6) { animation-delay: 200ms; }
 
 .skeleton {
-  background: linear-gradient(90deg, #eef2f2 25%, #e2e8e8 37%, #eef2f2 63%);
+  background: linear-gradient(90deg, var(--skeleton-a) 25%, var(--skeleton-b) 37%, var(--skeleton-a) 63%);
   background-size: 200% 100%;
   animation: var(--animate-shimmer);
   border-radius: 0.5rem;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-brand-500);
+/* No focus borders when clicking or typing; keyboard (Tab) users still get a soft ring on buttons and links. */
+:focus,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-brand-500) 50%, transparent);
   outline-offset: 2px;
 }
 

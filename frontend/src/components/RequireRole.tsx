@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { getMe, tokenStore, type Role, type User } from "@/lib/api";
 
+import { ThemeToggle } from "./Theme";
 import { Avatar, Spinner } from "./ui";
 
 interface NavLink {
@@ -102,6 +103,7 @@ export function RequireRole({ role, children }: { role: Role; children: (user: U
             <p className="truncate text-sm font-medium text-white">{user.name}</p>
             <p className="truncate text-xs text-brand-200">{user.email}</p>
           </div>
+          <ThemeToggle className="text-brand-200 hover:bg-white/10 hover:text-white" />
           <button onClick={logout} title="Log out" className="rounded-lg p-1.5 text-brand-200 transition hover:bg-white/10 hover:text-white">
             <LogOut className="h-4 w-4" />
           </button>
@@ -113,19 +115,22 @@ export function RequireRole({ role, children }: { role: Role; children: (user: U
   return (
     <div className="min-h-screen lg:pl-64">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 hidden w-64 bg-gradient-to-b from-brand-900 to-brand-800 lg:block">{sidebar}</aside>
+      <aside className="brand-panel fixed inset-y-0 left-0 hidden w-64 bg-gradient-to-b from-brand-900 to-brand-800 lg:block">{sidebar}</aside>
 
       {/* Mobile top bar + drawer */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-3 backdrop-blur lg:hidden">
-        <span className="font-semibold text-brand-800">BookLeaf</span>
-        <button onClick={() => setMenuOpen(true)} className="rounded-lg p-2 hover:bg-slate-100" aria-label="Open menu">
-          <Menu className="h-5 w-5" />
-        </button>
+        <span className="font-semibold text-brand-700">BookLeaf</span>
+        <div className="flex items-center gap-1">
+          <ThemeToggle className="p-2 text-slate-600 hover:bg-slate-100" />
+          <button onClick={() => setMenuOpen(true)} className="rounded-lg p-2 hover:bg-slate-100" aria-label="Open menu">
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </header>
       {menuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-slate-900/40 animate-fade-in" onClick={() => setMenuOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-64 bg-gradient-to-b from-brand-900 to-brand-800 animate-slide-up">
+          <aside className="brand-panel absolute inset-y-0 left-0 w-64 bg-gradient-to-b from-brand-900 to-brand-800 animate-slide-up">
             <button onClick={() => setMenuOpen(false)} className="absolute right-3 top-5 text-brand-200" aria-label="Close menu">
               <X className="h-5 w-5" />
             </button>

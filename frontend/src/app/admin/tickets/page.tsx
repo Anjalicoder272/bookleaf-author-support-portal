@@ -47,7 +47,7 @@ function toParams(f: Filters) {
 const ACTIVE_PARAMS = toParams(DEFAULT_FILTERS);
 // Filter controls size to their content (the shared `input` style is full-width).
 const select =
-  "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100 focus:outline-none";
+  "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition focus:outline-none";
 
 function Queue() {
   const router = useRouter();

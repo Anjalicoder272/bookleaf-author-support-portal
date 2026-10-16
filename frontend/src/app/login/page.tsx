@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { ThemeToggle } from "@/components/Theme";
 import { btn, input, Spinner } from "@/components/ui";
 import { ApiError, login } from "@/lib/api";
 
@@ -44,7 +45,7 @@ export default function LoginPage() {
   return (
     <main className="grid min-h-screen lg:grid-cols-2">
       {/* Brand panel */}
-      <section className="relative hidden overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 p-12 text-white lg:flex lg:flex-col lg:justify-between">
+      <section className="brand-panel relative hidden overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 p-12 text-white lg:flex lg:flex-col lg:justify-between">
         <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -bottom-32 -left-16 h-96 w-96 rounded-full bg-amber-300/20 blur-3xl" />
 
@@ -77,7 +78,8 @@ export default function LoginPage() {
       </section>
 
       {/* Form */}
-      <section className="flex items-center justify-center p-6 sm:p-12">
+      <section className="relative flex items-center justify-center p-6 sm:p-12">
+        <ThemeToggle className="absolute right-4 top-4 border border-slate-200 bg-white p-2 text-slate-600 shadow-sm hover:bg-slate-50" />
         <div className="w-full max-w-sm animate-slide-up">
           <div className="mb-8 lg:hidden">
             <span className="text-lg font-semibold text-brand-800">BookLeaf Publishing</span>
@@ -136,7 +138,7 @@ export default function LoginPage() {
 
           <div className="mt-10">
             <div className="relative mb-4 text-center text-xs font-medium uppercase tracking-wide text-slate-400">
-              <span className="relative z-10 bg-[#f6f8f8] px-3">Try a demo account</span>
+              <span className="relative z-10 bg-[var(--page-bg)] px-3">Try a demo account</span>
               <span className="absolute inset-x-0 top-1/2 h-px bg-slate-200" />
             </div>
             <div className="grid grid-cols-2 gap-3">

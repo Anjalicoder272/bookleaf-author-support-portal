@@ -132,7 +132,7 @@ function Composer({ ticket, autoDraft, onSent }: { ticket: AdminTicketDetail; au
           }}
           rows={12}
           placeholder="Write your reply to the author…"
-          className={`${input} rounded-none border-0 shadow-none focus:ring-0`}
+          className={`${input} rounded-none border-0 shadow-none`}
         />
       )}
 
@@ -369,7 +369,7 @@ function NotesCard({ ticket, onChange }: { ticket: AdminTicketDetail; onChange: 
         }}
         rows={2}
         placeholder="Add a note for the team…"
-        className={`${input} border-amber-200 bg-white text-xs focus:border-amber-400 focus:ring-amber-100`}
+        className={`${input} border-amber-200 bg-white text-xs`}
       />
       <button disabled={saving || !note.trim()} onClick={add} className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-amber-600 disabled:opacity-50">
         {saving && <Spinner className="h-3 w-3" />} Add note

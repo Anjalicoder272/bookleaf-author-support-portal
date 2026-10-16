@@ -105,7 +105,7 @@ function TicketDetail({ id }: { id: number }) {
           if you need more help.
         </div>
       ) : (
-        <div className={`${card} mt-6 p-3 focus-within:ring-4 focus-within:ring-brand-100`}>
+        <div className={`${card} mt-6 p-3`}>
           <textarea
             value={reply}
             onChange={(e) => setReply(e.target.value)}
@@ -114,7 +114,7 @@ function TicketDetail({ id }: { id: number }) {
             }}
             rows={3}
             placeholder={ticket.status === "resolved" ? "Still need help? Replying will reopen this ticket." : "Write a reply…"}
-            className={`${input} resize-none border-0 shadow-none focus:ring-0`}
+            className={`${input} resize-none border-0 shadow-none`}
           />
           <div className="flex items-center justify-between px-1 pt-1">
             <span className="text-xs text-slate-400">

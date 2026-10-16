@@ -10,7 +10,7 @@ import { getMyBooks, type Book, type User } from "@/lib/api";
 import { formatDate, formatINR, PAYOUT_THRESHOLD } from "@/lib/format";
 
 const COVER_GRADIENTS = [
-  "from-brand-500 to-brand-800",
+  "from-brand-500 to-brand-900",
   "from-amber-400 to-orange-600",
   "from-indigo-400 to-violet-700",
   "from-rose-400 to-pink-700",
