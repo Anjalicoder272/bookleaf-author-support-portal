@@ -1,85 +1,130 @@
 "use client";
 
+import { ArrowLeft, BookOpen, Lock, Send } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 
 import { StatusBadge } from "@/components/Badges";
-import { MessageThread } from "@/components/MessageThread";
+import { MessageThread, StatusTimeline } from "@/components/MessageThread";
 import { RequireRole } from "@/components/RequireRole";
+import { btn, card, input, Kbd, LiveDot, Skeleton, Spinner } from "@/components/ui";
 import { usePolling } from "@/hooks/usePolling";
 import { ApiError, authorTickets } from "@/lib/api";
+import { timeAgo } from "@/lib/labels";
 
 function TicketDetail({ id }: { id: number }) {
   const fetchTicket = useCallback(() => authorTickets.get(id), [id]);
   const { data: ticket, error, refresh } = usePolling(fetchTicket, 5000);
   const [reply, setReply] = useState("");
   const [sending, setSending] = useState(false);
-  const [sendError, setSendError] = useState("");
 
-  if (!ticket) return <p className="text-sm text-gray-500">{error || "Loading…"}</p>;
+  if (!ticket)
+    return error ? (
+      <p className="text-sm text-red-600">{error}</p>
+    ) : (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-24" />
+        <Skeleton className="h-40" />
+      </div>
+    );
 
-  async function sendReply(e: React.FormEvent) {
-    e.preventDefault();
+  async function sendReply() {
+    if (!reply.trim() || sending) return;
     setSending(true);
-    setSendError("");
     try {
       await authorTickets.reply(id, reply.trim());
       setReply("");
+      toast.success(ticket?.status === "resolved" ? "Reply sent. Ticket reopened." : "Reply sent");
       await refresh();
     } catch (err) {
-      setSendError(err instanceof ApiError ? err.message : "Couldn't send. Please try again.");
+      toast.error(err instanceof ApiError ? err.message : "Couldn't send. Please try again.");
     } finally {
       setSending(false);
     }
   }
 
-  const waiting = ticket.messages.length === 0 || ticket.messages.at(-1)?.sender_role === "author";
+  const awaitingTeam = ticket.messages.length === 0 || ticket.messages.at(-1)?.sender_role === "author";
 
   return (
-    <div className="space-y-4">
-      <Link href="/author/tickets" className="text-sm text-teal-700">
-        ← All tickets
+    <div className="mx-auto max-w-3xl">
+      <Link href="/author/tickets" className={`${btn.ghost} -ml-2.5 mb-4`}>
+        <ArrowLeft className="h-4 w-4" /> All tickets
       </Link>
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-semibold">{ticket.subject}</h1>
-        <StatusBadge status={ticket.status} />
+
+      <div className={`${card} mb-6 p-5 animate-slide-up`}>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900">{ticket.subject}</h1>
+            <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
+              <BookOpen className="h-4 w-4" /> {ticket.book?.title ?? "General / Account"} · #{ticket.id} · opened {timeAgo(ticket.created_at)}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <LiveDot />
+            <StatusBadge status={ticket.status} />
+          </div>
+        </div>
+        <div className="mt-5">
+          <StatusTimeline status={ticket.status} />
+        </div>
       </div>
-      <p className="text-sm text-gray-500">
-        #{ticket.id} · {ticket.book?.title ?? "General / Account"}
-        {ticket.attachment_name && ` · Attachment: ${ticket.attachment_name}`}
-      </p>
 
       <MessageThread
         viewer="author"
         messages={ticket.messages}
-        original={{ subject: ticket.subject, description: ticket.description, created_at: ticket.created_at, by: "You" }}
+        original={{
+          subject: ticket.subject,
+          description: ticket.description,
+          created_at: ticket.created_at,
+          by: "You",
+          attachment: ticket.attachment_name,
+        }}
       />
 
-      {waiting && ticket.status !== "closed" && (
-        <p className="text-sm text-gray-500">Our team will reply here. This page updates automatically.</p>
+      {awaitingTeam && ticket.status !== "closed" && (
+        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-dashed border-slate-200 bg-white/60 p-4 text-sm text-slate-500 animate-fade-in">
+          <span className="flex gap-1">
+            {[0, 150, 300].map((delay) => (
+              <span key={delay} className="h-2 w-2 animate-bounce rounded-full bg-brand-400" style={{ animationDelay: `${delay}ms` }} />
+            ))}
+          </span>
+          Our team will reply here. This page updates on its own, no need to refresh.
+        </div>
       )}
 
       {ticket.status === "closed" ? (
-        <p className="rounded bg-gray-100 p-3 text-sm text-gray-600">
-          This ticket is closed. <Link href="/author/tickets/new" className="text-teal-700 underline">Raise a new ticket</Link>{" "}
+        <div className="mt-6 flex items-center gap-3 rounded-2xl bg-slate-100 p-4 text-sm text-slate-600">
+          <Lock className="h-4 w-4" />
+          This ticket is closed.
+          <Link href="/author/tickets/new" className="font-medium text-brand-700 hover:underline">
+            Raise a new ticket
+          </Link>
           if you need more help.
-        </p>
+        </div>
       ) : (
-        <form onSubmit={sendReply} className="space-y-2">
+        <div className={`${card} mt-6 p-3 focus-within:ring-4 focus-within:ring-brand-100`}>
           <textarea
             value={reply}
             onChange={(e) => setReply(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) sendReply();
+            }}
             rows={3}
-            required
-            placeholder={ticket.status === "resolved" ? "Still need help? Replying will reopen this ticket." : "Add a reply…"}
-            className="w-full rounded border bg-white px-3 py-2 text-sm"
+            placeholder={ticket.status === "resolved" ? "Still need help? Replying will reopen this ticket." : "Write a reply…"}
+            className={`${input} resize-none border-0 shadow-none focus:ring-0`}
           />
-          {sendError && <p className="text-sm text-red-600">{sendError}</p>}
-          <button disabled={sending || !reply.trim()} className="rounded bg-teal-700 px-4 py-2 text-sm text-white disabled:opacity-60">
-            {sending ? "Sending…" : "Send reply"}
-          </button>
-        </form>
+          <div className="flex items-center justify-between px-1 pt-1">
+            <span className="text-xs text-slate-400">
+              <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd> to send
+            </span>
+            <button onClick={sendReply} disabled={sending || !reply.trim()} className={btn.primary}>
+              {sending ? <Spinner /> : <Send className="h-4 w-4" />} Send
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
