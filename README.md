@@ -5,7 +5,7 @@ royalties and raise support tickets; the operations team works a prioritised que
 each ticket, scores its urgency and drafts a reply grounded in BookLeaf's own policies.
 
 - **Live demo:** https://bookleaf-author-support-beta.vercel.app
-- **API docs (Swagger):** https://bookleaf-author-support-api.onrender.com/api/docs/
+- **API docs (Swagger):** https://bookleaf-api-66xo.onrender.com/api/docs/
 - The API runs on Render's free tier, which sleeps after 15 minutes idle. The first request after a pause can
   take up to a minute while it wakes; after that it is fast.
 - **Write-up:** [WRITEUP.md](WRITEUP.md)
